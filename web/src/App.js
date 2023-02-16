@@ -419,6 +419,7 @@ class App extends Component {
     )
   }
 
+  /*
   load() {
     const { decodedToken } = this.state
     const signedIn = !!decodedToken
@@ -449,6 +450,7 @@ class App extends Component {
   componentDidMount() {
     this.load()
   }
+  */
 
   // When state changes
   componentDidUpdate(prevProps, prevState) {

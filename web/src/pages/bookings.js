@@ -12,6 +12,8 @@ import FilterElement from '../components/FilterElement'
 import Calendar from '../components/Calendar'
 import RoomsList from '../components/RoomsList'
 
+import load from '../load'
+
 import moment from 'moment'
 
 function Bookings (){
@@ -19,6 +21,9 @@ function Bookings (){
     const decodedToken = getDecodedToken()
     //}
     const signedIn = !!decodedToken
+    const setCalendarDate = date => {
+        this.setState({ calendarDate: date })
+      }
     
     const webName = "Online Counselling System"
 
@@ -39,10 +44,7 @@ function Bookings (){
                 </div>
                 <div className="sidebar">
                 <div className="sidebar__box">
-                    <Calendar />
-                </div>
-                <div className="sidebar__box">
-
+                    <Calendar setCalendarDate={setCalendarDate} />
                 </div>
                 <div className="sidebar__box">
                     <Key />
