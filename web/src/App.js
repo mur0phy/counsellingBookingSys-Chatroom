@@ -377,8 +377,7 @@ class App extends Component {
                 )} />
 
                 <Route path="/mybookings" exact render={requireAuth(() => (
-                  <Bookings />
-                    /*<Fragment>
+                    <Fragment>
                       {!!decodedToken &&
                         !!roomData && (
                           <div className="wrapper">
@@ -403,7 +402,7 @@ class App extends Component {
                             </div>
                           </div>
                         )}
-                    </Fragment>*/
+                    </Fragment>
                   ))} />
 
                 <Route path="/chatroom" 
