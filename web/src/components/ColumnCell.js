@@ -1,5 +1,5 @@
 import React from 'react'
-import { dailyBookings, bookingArray } from '../helpers/rooms'
+import { dailyBookings, bookingArray } from '../helpers/workers'
 
 const ColumnCell = props => {
 

@@ -14,7 +14,7 @@ import Footer from './components/Footer'
 import Key from './components/Key'
 import MyBookings from './components/MyBookings'
 import NavBar from './components/NavBar'
-import RoomsList from './components/RoomsList'
+import RoomsList from './components/WorkersList'
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 
@@ -27,7 +27,8 @@ import { makeBooking, deleteBooking, updateStateRoom } from './api/booking'
 import Calendar from './components/Calendar'
 import BookingModal from './components/BookingModal'
 import { floorParams, filterParams, capacityParams, onFilterByFloor, onFilterByFeature, onFilterByCapacity, onFilterByAvailablity } from './helpers/filters'
-import { initialRoom } from './helpers/rooms'
+import { initialRoom } from './helpers/workers'
+//import './load'
 
 class App extends Component {
   state = {
@@ -47,20 +48,25 @@ class App extends Component {
     disableRecurring: true
   }
 
+  // Using in page bookings
+  /*
   // Pass supplied first name, lastname, email & password to the signUp function, returns the user's token
   onSignUp = ({ firstName, lastName, email, password }) => {
     signUp({ firstName, lastName, email, password }).then(decodedToken => {
       this.setState({ decodedToken })
     })
   }
-
+  */
+ 
+  // Using in page bookings  
+  /*
   // Pass supplied email & password to the signIn function, returns the users token
   onSignIn = ({ email, password }) => {
     signIn({ email, password }).then(decodedToken => {
       this.setState({ decodedToken })
     })
   }
-
+*/
   // Removes the current token from local storage
   onSignOut = () => {
     signOut()
@@ -418,8 +424,7 @@ class App extends Component {
       </Router>
     )
   }
-
-  /*
+  
   load() {
     const { decodedToken } = this.state
     const signedIn = !!decodedToken
@@ -450,8 +455,7 @@ class App extends Component {
   componentDidMount() {
     this.load()
   }
-  */
-
+  
   // When state changes
   componentDidUpdate(prevProps, prevState) {
     // If just signed in, signed up, or signed out,
@@ -460,7 +464,6 @@ class App extends Component {
       this.load()
     }
   }
-
 }
 
 export default App

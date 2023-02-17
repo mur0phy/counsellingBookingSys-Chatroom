@@ -1,4 +1,12 @@
-function load() {
+import React from 'react'
+
+function Load(){
+  return(
+    <div></div>
+  )
+}
+/*
+function Load() {
     const { decodedToken } = this.state
     const signedIn = !!decodedToken
 
@@ -22,9 +30,21 @@ function load() {
           this.setState({ error })
         })
     }
-  }
 
   // When the App first renders
-  function componentDidMount() {
+  const componentDidMount() {
     this.load()
   }
+
+  // When state changes
+  const componentDidUpdate(prevProps, prevState) {
+    // If just signed in, signed up, or signed out,
+    // then the token will have changed
+    if (this.state.decodedToken !== prevState.decodedToken) {
+      this.load()
+    }
+  }
+} 
+*/
+
+export default Load

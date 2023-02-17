@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import { formatAssetName, dailyBookings, bookingArray } from '../helpers/rooms'
+import { formatAssetName, dailyBookings, bookingArray } from '../helpers/workers'
 
-// Accept the 24 hour dayHours array as the day's booking data for a room
+// Accept the 24 hour dayHours array as the day's booking data for a worker
 const rowMapper = (dayHours, props) => {
   let tableRow = []
 
@@ -16,7 +16,7 @@ const rowMapper = (dayHours, props) => {
     if (typeof bookingData === 'number') {
       tableRow.push(<td className="table__cell--available">
           <Link to="/createbooking" onClick={() => {
-              props.onSetRoom(props.room._id)
+              props.onSetRoom(props.worker._id)
         }} className="table__link--available">
             &nbsp;
           </Link>
@@ -89,11 +89,11 @@ const rowMapper = (dayHours, props) => {
 const RoomRow = props => (
   <tr className="table__row">
     <th scope="row" className="table__cell--align-left">
-      <Link to="/createbooking" onClick={() => props.onSetRoom(props.room._id)} className="table__link">{props.room.name}</Link>
+      <Link to="/createbooking" onClick={() => props.onSetRoom(props.worker._id)} className="table__link">{props.worker.name}</Link>
       <ul >
-      {Object.keys(props.room.assets).map(
+      {Object.keys(props.worker.assets).map(
         asset =>
-          props.room.assets[asset] && (
+          props.worker.assets[asset] && (
             <li key={asset} onClick={props.onShowBooking} className="table__data--asset">{formatAssetName(asset)}</li>
             )
           )}

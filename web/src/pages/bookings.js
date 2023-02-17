@@ -10,9 +10,9 @@ import NavBar from '../components/NavBar'
 import Key from '../components/Key'
 import FilterElement from '../components/FilterElement'
 import Calendar from '../components/Calendar'
-import RoomsList from '../components/RoomsList'
+import RoomsList from '../components/WorkersList'
 
-import load from '../load'
+import load from '../Load'
 
 import moment from 'moment'
 
