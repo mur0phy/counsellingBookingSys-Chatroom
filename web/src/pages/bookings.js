@@ -10,9 +10,9 @@ import NavBar from '../components/NavBar'
 import Key from '../components/Key'
 import FilterElement from '../components/FilterElement'
 import Calendar from '../components/Calendar'
-import RoomsList from '../components/WorkersList'
+import WorkersList from '../components/WorkersList'
 
-import load from '../Load'
+//import load from '../load'
 
 import moment from 'moment'
 
@@ -40,7 +40,7 @@ function Bookings (){
             </div>
             <div className="wrapper__content">
                 <div className="header__page">
-                <h2 className="header__heading header__heading--sub">Book a room</h2>
+                <h2 className="header__heading header__heading--sub">Book a worker</h2>
                 </div>
                 <div className="sidebar">
                 <div className="sidebar__box">
@@ -51,12 +51,12 @@ function Bookings (){
                 </div>
                 </div>
                 <div className="content">
-                    <RoomsList
-                        /*rooms={filteredData}
-                        onRoomSelect={this.onRoomSelect}
+                    <WorkersList
+                        /*workers={filteredData}
+                        onWorkerSelect={this.onWorkerSelect}
                         onShowBooking={this.onShowBooking}
                         date={calendarDate}
-                        onSetRoom={this.setRoom}*/
+                        onSetWorker={this.setWorker}*/
                     />
                 </div>
                 </div>

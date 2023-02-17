@@ -14,26 +14,26 @@ import Footer from './components/Footer'
 import Key from './components/Key'
 import MyBookings from './components/MyBookings'
 import NavBar from './components/NavBar'
-import RoomsList from './components/WorkersList'
+import WorkersList from './components/WorkersList'
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 
-//import Chatroom from "./chatroom/App"
+//import chatroom from "./chatroom/App"
 
 import { signIn, signOut, signUp } from './api/auth'
-import { listRooms } from './api/rooms'
+import { listWorkers } from './api/workers'
 import { getDecodedToken } from './api/token'
-import { makeBooking, deleteBooking, updateStateRoom } from './api/booking'
+import { makeBooking, deleteBooking, updateStateWorker } from './api/booking'
 import Calendar from './components/Calendar'
 import BookingModal from './components/BookingModal'
 import { floorParams, filterParams, capacityParams, onFilterByFloor, onFilterByFeature, onFilterByCapacity, onFilterByAvailablity } from './helpers/filters'
-import { initialRoom } from './helpers/workers'
+import { initialWorker } from './helpers/workers'
 //import './load'
 
 class App extends Component {
   state = {
     decodedToken: getDecodedToken(), // retrieves the token from local storage if valid, else will be null
-    roomData: null,
+    workerData: null,
     userBookings: null,
     calendarDate: new Date(),
     selectedBooking: null,
@@ -43,7 +43,7 @@ class App extends Component {
     availabilityParam: null,
     filteredData: null,
     checked: null,
-    currentRoom: null,
+    currentWorker: null,
     error: null,
     disableRecurring: true
   }
@@ -88,20 +88,20 @@ class App extends Component {
   }
 
   // Makes a booking by updating the database and the React state
-  onMakeBooking = ({ startDate, endDate, businessUnit, purpose, roomId, recurringData }) => {
-    const bookingData = { startDate, endDate, businessUnit, purpose, roomId }
-    const existingBookings = this.state.currentRoom.bookings
+  onMakeBooking = ({ startDate, endDate, businessUnit, purpose, workerId, recurringData }) => {
+    const bookingData = { startDate, endDate, businessUnit, purpose, workerId }
+    const existingBookings = this.state.currentWorker.bookings
 
     // Check if there is a clash and, if not, save the new booking to the database
     try {
       makeBooking(
-        { startDate, endDate, businessUnit, purpose, roomId, recurringData },
+        { startDate, endDate, businessUnit, purpose, workerId, recurringData },
         existingBookings
       )
-        .then(updatedRoom => {
+        .then(updatedWorker => {
           // If the new booking is successfully saved to the database
-          alert(`${updatedRoom.name} successfully booked.`)
-          updateStateRoom(this, updatedRoom, this.loadMyBookings)
+          alert(`${updatedWorker.name} successfully booked.`)
+          updateStateWorker(this, updatedWorker, this.loadMyBookings)
         })
     } catch (err) {
       // If there is a booking clash and the booking could not be saved
@@ -113,22 +113,22 @@ class App extends Component {
   }
 
   // Deletes a booking from the database and updates the React state
-  onDeleteBooking = (roomId, bookingId) => {
-    deleteBooking(roomId, bookingId)
-      .then(updatedRoom => {
+  onDeleteBooking = (workerId, bookingId) => {
+    deleteBooking(workerId, bookingId)
+      .then(updatedWorker => {
         alert('Booking successfully deleted')
-        updateStateRoom(
+        updateStateWorker(
           this,
-          updatedRoom,
+          updatedWorker,
           this.loadMyBookings,
         )
       })
       .catch(error => console.error(error.message))
   }
 
-  setRoom = id => {
-    const room = this.state.roomData.find(room => room._id === id)
-    this.setState({ currentRoom: room })
+  setWorker = id => {
+    const worker = this.state.workerData.find(worker => worker._id === id)
+    this.setState({ currentWorker: worker })
   }
 
   // setting the feature filter parameters
@@ -174,17 +174,17 @@ class App extends Component {
     this.setState({ availabilityParam: availability })
   }
 
-  // get today's bookings for all rooms
+  // get today's bookings for all workers
   oneSetCurrentDateBookings = () => {
     const currentDate = moment().format('DD-MM-YYYY')
-    // const roomData = this.state.roomData
-    const roomData = this.state.roomData
+    // const workerData = this.state.workerData
+    const workerData = this.state.workerData
     // array to collect todays bookings
     let todaysBookings = []
-    // loop through all rooms
-    roomData.forEach(room => {
-      // loop through all bookings for that room
-      room.bookings.forEach(booking => {
+    // loop through all workers
+    workerData.forEach(worker => {
+      // loop through all bookings for that worker
+      worker.bookings.forEach(booking => {
         const bookingStart = moment(booking.bookingStart).format('DD-MM-YYYY')
         if (bookingStart === currentDate) {
           todaysBookings.push(booking)
@@ -198,13 +198,13 @@ class App extends Component {
   loadMyBookings = () => {
     let myBookings = []
     const userId = this.state.decodedToken.sub
-    // Loop through all the rooms
-    this.state.roomData.forEach(room => {
-      // Loop through all the bookings in 'room'
-      room.bookings.forEach(booking => {
+    // Loop through all the workers
+    this.state.workerData.forEach(worker => {
+      // Loop through all the bookings in 'worker'
+      worker.bookings.forEach(booking => {
         if (booking.user === userId) {
           // Push all bookings where the current userId is equal to the booking's userId into myBookings
-          booking.roomId = room._id
+          booking.workerId = worker._id
           myBookings.push(booking)
         }
       })
@@ -216,9 +216,9 @@ class App extends Component {
     const webName = "Online Counselling System"
     const {
       decodedToken,
-      currentRoom,
+      currentWorker,
       userBookings,
-      roomData,
+      workerData,
       calendarDate,
       selectedBooking,
       filterParams,
@@ -239,9 +239,9 @@ class App extends Component {
     const featureParams = this.state.filterParams
     const date = this.state.currentDate
 
-    if (!!roomData) {
-      // Send all room data and the selected floor, return filtered floors and store in filteredData
-      filteredData = onFilterByFloor(floorParam, roomData)
+    if (!!workerData) {
+      // Send all worker data and the selected floor, return filtered floors and store in filteredData
+      filteredData = onFilterByFloor(floorParam, workerData)
       // Send the previously filtered data along with the feature params
       filteredData = onFilterByFeature(featureParams, filteredData)
       // Send the previously filtered data along with the capacity params
@@ -276,12 +276,12 @@ class App extends Component {
                   <Bookings />
                   /*
                   <Fragment>
-                    { !!decodedToken && !roomData && loading && (
+                    { !!decodedToken && !workerData && loading && (
                       <div className="loading_animation">
                         <Loading />
                       </div>
                     ) }
-                    {!!decodedToken && !!roomData && !loading && (
+                    {!!decodedToken && !!workerData && !loading && (
                       <div className="wrapper">
                         <div className="header header__nav header--flex">
                           <h1 className="header__heading header__heading--main">{ webName }</h1>
@@ -293,7 +293,7 @@ class App extends Component {
                         </div>
                         <div className="wrapper__content">
                           <div className="header__page">
-                            <h2 className="header__heading header__heading--sub">Book a room | {moment(calendarDate).format('MMMM Do YYYY')}</h2>
+                            <h2 className="header__heading header__heading--sub">Book a worker | {moment(calendarDate).format('MMMM Do YYYY')}</h2>
                           </div>
                           <div className="sidebar">
                             <div className="sidebar__box">
@@ -320,12 +320,12 @@ class App extends Component {
                             </div>
                           </div>
                           <div className="content">
-                            <RoomsList
-                              rooms={filteredData}
-                              onRoomSelect={this.onRoomSelect}
+                            <WorkersList
+                              workers={filteredData}
+                              onWorkerSelect={this.onWorkerSelect}
                               onShowBooking={this.onShowBooking}
                               date={calendarDate}
-                              onSetRoom={this.setRoom}
+                              onSetWorker={this.setWorker}
                             />
                           </div>
                          </div>
@@ -333,7 +333,7 @@ class App extends Component {
                           selectedBooking={selectedBooking}
                           onCloseBooking={this.onCloseBooking}
                           onDeleteBooking={onDeleteBooking}
-                          roomData={roomData}
+                          workerData={workerData}
                           user={decodedToken.email}
                         />
                       </div>
@@ -346,8 +346,8 @@ class App extends Component {
                   () => (
                     <Fragment>
                       {!!decodedToken &&
-                        !!roomData &&
-                        !!currentRoom && (
+                        !!workerData &&
+                        !!currentWorker && (
                           <div className="wrapper">
                             <header className="header header__nav header--flex">
                               <h1 className="header__heading header__heading--main">{ webName }</h1>
@@ -360,7 +360,7 @@ class App extends Component {
                             <div className="wrapper__content">
                               <BookingForm
                                 user={decodedToken.email}
-                                roomData={currentRoom}
+                                workerData={currentWorker}
                                 onMakeBooking={this.onMakeBooking}
                                 date={calendarDate}
                                 disableRecurring={disableRecurring}
@@ -373,7 +373,7 @@ class App extends Component {
                                 selectedBooking={selectedBooking}
                                 onCloseBooking={this.onCloseBooking}
                                 onDeleteBooking={onDeleteBooking}
-                                roomData={roomData}
+                                workerData={workerData}
                                 user={decodedToken.email}
                               />
                         </div>
@@ -385,7 +385,7 @@ class App extends Component {
                 <Route path="/mybookings" exact render={requireAuth(() => (
                     <Fragment>
                       {!!decodedToken &&
-                        !!roomData && (
+                        !!workerData && (
                           <div className="wrapper">
                             <div className="header header__nav header--flex">
                               <h1 className="header__heading header__heading--main">{ webName }</h1>
@@ -400,7 +400,7 @@ class App extends Component {
                                 <h2 className="header__heading header__heading--sub">My Bookings</h2>
                               </div>
                               <MyBookings
-                                roomData={roomData}
+                                workerData={workerData}
                                 user={decodedToken.email}
                                 userBookings={userBookings}
                                 onDeleteBooking={onDeleteBooking}
@@ -411,7 +411,7 @@ class App extends Component {
                     </Fragment>
                   ))} />
 
-                <Route path="/chatroom" 
+                <Route path="/chatworker" 
                   
                 />
                 <Route render={({ location }) => <h2>
@@ -432,20 +432,20 @@ class App extends Component {
     if (signedIn) {
       // display loading page
       this.setState({ loading: true })
-      // load all of the rooms from the database
-      listRooms()
-        .then(rooms => {
-          this.setState({ roomData: rooms })
+      // load all of the workers from the database
+      listWorkers()
+        .then(workers => {
+          this.setState({ workerData: workers })
           // load the current user's bookings
           this.loadMyBookings()
-          // the state's current room defaults to first room
-          const room = this.state.roomData[0]
-          this.setRoom(room._id)
+          // the state's current worker defaults to first worker
+          const worker = this.state.workerData[0]
+          this.setWorker(worker._id)
           // toggle loading page off
           this.setState({ loading: false })
         })
         .catch(error => {
-          console.error('Error loading room data', error)
+          console.error('Error loading worker data', error)
           this.setState({ error })
         })
     }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Load(){
+function load(){
   return(
     <div></div>
   )
@@ -13,20 +13,20 @@ function Load() {
     if (signedIn) {
       // display loading page
       this.setState({ loading: true })
-      // load all of the rooms from the database
-      listRooms()
-        .then(rooms => {
-          this.setState({ roomData: rooms })
+      // load all of the workers from the database
+      listWorkers()
+        .then(workers => {
+          this.setState({ WorkerData: workers })
           // load the current user's bookings
           this.loadMyBookings()
-          // the state's current room defaults to first room
-          const room = this.state.roomData[0]
-          this.setRoom(room._id)
+          // the state's current worker defaults to first worker
+          const worker = this.state.WorkerData[0]
+          this.setWorker(worker._id)
           // toggle loading page off
           this.setState({ loading: false })
         })
         .catch(error => {
-          console.error('Error loading room data', error)
+          console.error('Error loading worker data', error)
           this.setState({ error })
         })
     }

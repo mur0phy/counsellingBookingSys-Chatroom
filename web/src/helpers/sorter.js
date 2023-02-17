@@ -12,9 +12,9 @@ export const workerSorter = (workerList, floorNumber) => {
   // function to sort workers numerically by their floor number
   const numericalSort = workerList => { 
     return workerList.sort((first, second) => {
-      const firstRoom = first.name.replace(/\D+/, '')
-      const secondRoom = second.name.replace(/\D+/, '')
-      if (parseInt(firstRoom, 10) > parseInt(secondRoom, 10)) {
+      const firstWorker = first.name.replace(/\D+/, '')
+      const secondWorker = second.name.replace(/\D+/, '')
+      if (parseInt(firstWorker, 10) > parseInt(secondWorker, 10)) {
         return 1
       } else {
         return 0
@@ -22,8 +22,8 @@ export const workerSorter = (workerList, floorNumber) => {
     })
   }
   
-  // numerically sort a new array with each worker named 'Room'
-  let nameRoom = numericalSort(
+  // numerically sort a new array with each worker named 'Worker'
+  let nameWorker = numericalSort(
     filteredList.filter(worker => worker.name[0] === 'R')
   )
   
@@ -38,5 +38,5 @@ export const workerSorter = (workerList, floorNumber) => {
   )
   
   // re-combine the sorted workers, studios and others into a single array
-  return nameRoom.concat(nameStudio).concat(nameOther)
+  return nameWorker.concat(nameStudio).concat(nameOther)
 }

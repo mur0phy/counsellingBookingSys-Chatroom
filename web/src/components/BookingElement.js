@@ -9,10 +9,10 @@ function BookingElement({
   onDeleteBooking,
   workerData
 }) {
-
+  const HKTimeZone = 'Asia/Hong_Kong'
   const workerInfo = findWorkerInfo(bookingData.workerId, workerData)
-  const startTime = momentTimezone.tz(bookingData.bookingStart, 'Australia/Sydney').format('h.mma')
-  const endTime = momentTimezone.tz(bookingData.bookingEnd, 'Australia/Sydney').format('h.mma')
+  const startTime = momentTimezone.tz(bookingData.bookingStart, HKTimeZone).format('h.mma')
+  const endTime = momentTimezone.tz(bookingData.bookingEnd, HKTimeZone).format('h.mma')
 
   return (
     <div className="booking__box">

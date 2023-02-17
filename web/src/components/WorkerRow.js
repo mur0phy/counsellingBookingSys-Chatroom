@@ -16,7 +16,7 @@ const rowMapper = (dayHours, props) => {
     if (typeof bookingData === 'number') {
       tableRow.push(<td className="table__cell--available">
           <Link to="/createbooking" onClick={() => {
-              props.onSetRoom(props.worker._id)
+              props.onSetWorker(props.worker._id)
         }} className="table__link--available">
             &nbsp;
           </Link>
@@ -86,10 +86,10 @@ const rowMapper = (dayHours, props) => {
   return tableRow
 }
 
-const RoomRow = props => (
+const WorkerRow = props => (
   <tr className="table__row">
     <th scope="row" className="table__cell--align-left">
-      <Link to="/createbooking" onClick={() => props.onSetRoom(props.worker._id)} className="table__link">{props.worker.name}</Link>
+      <Link to="/createbooking" onClick={() => props.onSetWorker(props.worker._id)} className="table__link">{props.worker.name}</Link>
       <ul >
       {Object.keys(props.worker.assets).map(
         asset =>
@@ -106,4 +106,4 @@ const RoomRow = props => (
   </tr>
 )
 
-export default RoomRow
+export default WorkerRow
